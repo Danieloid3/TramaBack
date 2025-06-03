@@ -3,10 +3,9 @@ package taller2.tramaback.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import taller2.tramaback.Models.User;
 import taller2.tramaback.Repositories.UserRepository;
-
 import java.util.List;
+import taller2.tramaback.Models.User;
 @Service
 public class UserService implements IUserService {
     @Autowired

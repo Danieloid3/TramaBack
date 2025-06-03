@@ -2,9 +2,10 @@ package taller2.tramaback.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import taller2.tramaback.Models.Review;
 import taller2.tramaback.Repositories.ReviewRepository;
 import java.util.List;
+import taller2.tramaback.Models.Review;
+import taller2.tramaback.Services.IReviewService;
 @Service
 public class ReviewService implements IReviewService {
     @Autowired
@@ -46,6 +47,8 @@ public class ReviewService implements IReviewService {
 
       //  return ReviewRepository.findByMovieId(movieId);
     //}
+
+
 
 
 

@@ -17,7 +17,7 @@ public class User {
     private Long id;
 
     @Column(name = "role", nullable = false)
-    private String role = "ROLE_USER";
+    private String role;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;

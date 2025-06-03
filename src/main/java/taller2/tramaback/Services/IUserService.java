@@ -1,6 +1,8 @@
 package taller2.tramaback.Services;
 import taller2.tramaback.Models.User;
+
 import java.util.List;
+
 
 public interface IUserService {
 

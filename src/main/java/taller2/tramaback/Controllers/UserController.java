@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import taller2.tramaback.Services.IUserService;
 import taller2.tramaback.Models.User;
+
 import java.util.List;
 
 @RestController

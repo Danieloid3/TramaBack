@@ -1,6 +1,7 @@
-package taller2.tramaback.Services;
-import taller2.tramaback.Models.Comment;
+/*package taller2.tramaback.Services;
 import java.util.List;
+import taller2.tramaback.Models.Comment;
+
 public interface ICommentService {
     List<Comment> getAllComments();
     Comment getCommentById(Long id);
@@ -8,5 +9,5 @@ public interface ICommentService {
     Comment updateComment(Long id, Comment comment);
     void deleteComment(Long id);
     List<Comment> getCommentsByUserId(Long userId);
-    List<Comment> getCommentsByReviewId(Long reviewId);
-}
+    List<Comment> getCommentsByReviewId(Long reviewId);*/
+//}
