@@ -1,4 +1,4 @@
-package taller2.tramaback.Entities;
+package taller2.tramaback.Models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

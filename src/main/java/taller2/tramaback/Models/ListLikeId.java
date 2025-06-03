@@ -1,4 +1,4 @@
-package taller2.tramaback.Entities;
+package taller2.tramaback.Models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -8,13 +8,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class CommentLikeId implements Serializable {
-    private static final long serialVersionUID = 185394591483557787L;
+public class ListLikeId implements Serializable {
+    private static final long serialVersionUID = 5716107982510203474L;
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "comment_id", nullable = false)
-    private Long commentId;
+    @Column(name = "list_id", nullable = false)
+    private Long listId;
 
     public Long getUserId() {
         return userId;
@@ -24,26 +24,26 @@ public class CommentLikeId implements Serializable {
         this.userId = userId;
     }
 
-    public Long getCommentId() {
-        return commentId;
+    public Long getListId() {
+        return listId;
     }
 
-    public void setCommentId(Long commentId) {
-        this.commentId = commentId;
+    public void setListId(Long listId) {
+        this.listId = listId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        CommentLikeId entity = (CommentLikeId) o;
-        return Objects.equals(this.commentId, entity.commentId) &&
+        ListLikeId entity = (ListLikeId) o;
+        return Objects.equals(this.listId, entity.listId) &&
                 Objects.equals(this.userId, entity.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(commentId, userId);
+        return Objects.hash(listId, userId);
     }
 
 }

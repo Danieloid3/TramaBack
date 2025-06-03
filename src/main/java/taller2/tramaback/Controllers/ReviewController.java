@@ -1,0 +1,84 @@
+package taller2.tramaback.Controllers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import taller2.tramaback.Services.IReviewService;
+import taller2.tramaback.Models.Review;
+import java.util.List;
+
+@RestController
+@RequestMapping("trama/")
+@CrossOrigin(value = "http://localhost:3000") // React port
+
+public class ReviewController {
+    private static final Logger logger = LoggerFactory.getLogger(ReviewController.class);
+
+    @Autowired
+    private IReviewService reviewService;
+
+    @GetMapping("/reviews")
+    public List<Review> getAllReviews() {
+        logger.info("Fetching all reviews");
+        List<Review> reviews = reviewService.getAllReviews();
+        if (reviews.isEmpty()) {
+            logger.warn("No reviews found");
+        } else {
+            reviews.forEach(review -> logger.info(review.toString()));
+        }
+        return reviews;
+    }
+
+    @GetMapping("/reviews/{id}")
+    public Review getReviewById(Long id) {
+        logger.info("Fetching review with ID: {}", id);
+        Review review = reviewService.getReviewById(id);
+        if (review == null) {
+            logger.warn("Review with ID {} not found", id);
+        } else {
+            logger.info("Found review: {}", review);
+        }
+        return review;
+    }
+    @GetMapping("/reviews/save")
+    public Review createReview(Review review) {
+        logger.info("Creating review: {}", review);
+        Review createdReview = reviewService.createReview(review);
+        logger.info("Review created: {}", createdReview);
+        return createdReview;
+    }
+    @GetMapping("/reviews/update/{id}")
+    public Review updateReview(Long id, Review review) {
+        logger.info("Updating review with ID: {}", id);
+        Review updatedReview = reviewService.updateReview(id, review);
+        if (updatedReview == null) {
+            logger.warn("Review with ID {} not found for update", id);
+        } else {
+            logger.info("Review updated: {}", updatedReview);
+        }
+        return updatedReview;
+    }
+    @GetMapping("/reviews/delete/{id}")
+    public void deleteReview(Long id) {
+        logger.info("Deleting review with ID: {}", id);
+        reviewService.deleteReview(id);
+        logger.info("Review with ID {} deleted", id);
+    }
+    @GetMapping("/reviews/user/{userId}")
+    public List<Review> getReviewsByUserId(Long userId) {
+        logger.info("Fetching reviews for user with ID: {}", userId);
+        List<Review> reviews = reviewService.getReviewsByUserId(userId);
+        if (reviews.isEmpty()) {
+            logger.warn("No reviews found for user with ID {}", userId);
+        } else {
+            reviews.forEach(review -> logger.info(review.toString()));
+        }
+        return reviews;
+    }
+
+
+    // Additional methods for creating, updating, deleting, and fetching reviews can be added here
+}

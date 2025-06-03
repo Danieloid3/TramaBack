@@ -1,4 +1,4 @@
-package taller2.tramaback.Entities;
+package taller2.tramaback.Models;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -8,10 +8,10 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "list_likes")
-public class ListLike {
+@Table(name = "review_likes")
+public class ReviewLike {
     @EmbeddedId
-    private ListLikeId id;
+    private ReviewLikeId id;
 
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -19,21 +19,21 @@ public class ListLike {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @MapsId("listId")
+    @MapsId("reviewId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "list_id", nullable = false)
-    private List list;
+    @JoinColumn(name = "review_id", nullable = false)
+    private Review review;
 
     @ColumnDefault("now()")
     @Column(name = "liked_at", nullable = false)
     private OffsetDateTime likedAt;
 
-    public ListLikeId getId() {
+    public ReviewLikeId getId() {
         return id;
     }
 
-    public void setId(ListLikeId id) {
+    public void setId(ReviewLikeId id) {
         this.id = id;
     }
 
@@ -45,12 +45,12 @@ public class ListLike {
         this.user = user;
     }
 
-    public List getList() {
-        return list;
+    public Review getReview() {
+        return review;
     }
 
-    public void setList(List list) {
-        this.list = list;
+    public void setReview(Review review) {
+        this.review = review;
     }
 
     public OffsetDateTime getLikedAt() {

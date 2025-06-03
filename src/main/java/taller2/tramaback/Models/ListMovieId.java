@@ -1,4 +1,4 @@
-package taller2.tramaback.Entities;
+package taller2.tramaback.Models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Embeddable
 public class ListMovieId implements Serializable {
-    private static final long serialVersionUID = -4700954114928100508L;
+    private static final long serialVersionUID = -7528433173087028054L;
     @Column(name = "list_id", nullable = false)
     private Long listId;
 

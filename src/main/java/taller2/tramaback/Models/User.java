@@ -1,4 +1,4 @@
-package taller2.tramaback.Entities;
+package taller2.tramaback.Models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +15,9 @@ public class User {
     @ColumnDefault("nextval('users_id_seq')")
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "role", nullable = false)
+    private String role = "ROLE_USER";
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
@@ -46,6 +49,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getName() {

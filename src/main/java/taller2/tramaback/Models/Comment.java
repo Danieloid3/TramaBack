@@ -1,4 +1,4 @@
-package taller2.tramaback.Entities;
+package taller2.tramaback.Models;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -9,10 +9,10 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "reviews")
-public class Review {
+@Table(name = "comments")
+public class Comment {
     @Id
-    @ColumnDefault("nextval('reviews_id_seq')")
+    @ColumnDefault("nextval('comments_id_seq')")
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -22,26 +22,20 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "movie_id")
-    private Movie movie;
+    @JoinColumn(name = "review_id")
+    private Review review;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "replied_comment_id")
+    private Comment repliedComment;
 
     @Column(name = "content", nullable = false, length = Integer.MAX_VALUE)
     private String content;
 
-    @Column(name = "rating")
-    private Double rating;
-
     @ColumnDefault("CURRENT_DATE")
     @Column(name = "published_date")
     private LocalDate publishedDate;
-
-    @Column(name = "image_url")
-    private String imageUrl;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "replied_review_id")
-    private Review repliedReview;
 
     @ColumnDefault("now()")
     @Column(name = "created_at", nullable = false)
@@ -67,12 +61,20 @@ public class Review {
         this.user = user;
     }
 
-    public Movie getMovie() {
-        return movie;
+    public Review getReview() {
+        return review;
     }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
+    public void setReview(Review review) {
+        this.review = review;
+    }
+
+    public Comment getRepliedComment() {
+        return repliedComment;
+    }
+
+    public void setRepliedComment(Comment repliedComment) {
+        this.repliedComment = repliedComment;
     }
 
     public String getContent() {
@@ -83,36 +85,12 @@ public class Review {
         this.content = content;
     }
 
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
     public LocalDate getPublishedDate() {
         return publishedDate;
     }
 
     public void setPublishedDate(LocalDate publishedDate) {
         this.publishedDate = publishedDate;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public Review getRepliedReview() {
-        return repliedReview;
-    }
-
-    public void setRepliedReview(Review repliedReview) {
-        this.repliedReview = repliedReview;
     }
 
     public OffsetDateTime getCreatedAt() {

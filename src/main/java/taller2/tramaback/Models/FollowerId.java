@@ -1,4 +1,4 @@
-package taller2.tramaback.Entities;
+package taller2.tramaback.Models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Embeddable
 public class FollowerId implements Serializable {
-    private static final long serialVersionUID = -1860005430250479482L;
+    private static final long serialVersionUID = 6754250150721362402L;
     @Column(name = "follower_id", nullable = false)
     private Long followerId;
 

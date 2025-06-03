@@ -1,4 +1,4 @@
-package taller2.tramaback.Entities;
+package taller2.tramaback.Models;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -8,10 +8,10 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "comment_likes")
-public class CommentLike {
+@Table(name = "list_likes")
+public class ListLike {
     @EmbeddedId
-    private CommentLikeId id;
+    private ListLikeId id;
 
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -19,21 +19,21 @@ public class CommentLike {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @MapsId("commentId")
+    @MapsId("listId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "comment_id", nullable = false)
-    private Comment comment;
+    @JoinColumn(name = "list_id", nullable = false)
+    private List list;
 
     @ColumnDefault("now()")
     @Column(name = "liked_at", nullable = false)
     private OffsetDateTime likedAt;
 
-    public CommentLikeId getId() {
+    public ListLikeId getId() {
         return id;
     }
 
-    public void setId(CommentLikeId id) {
+    public void setId(ListLikeId id) {
         this.id = id;
     }
 
@@ -45,12 +45,12 @@ public class CommentLike {
         this.user = user;
     }
 
-    public Comment getComment() {
-        return comment;
+    public List getList() {
+        return list;
     }
 
-    public void setComment(Comment comment) {
-        this.comment = comment;
+    public void setList(List list) {
+        this.list = list;
     }
 
     public OffsetDateTime getLikedAt() {
