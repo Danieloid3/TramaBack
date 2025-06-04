@@ -1,6 +1,4 @@
 package taller2.tramaback.Services;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import taller2.tramaback.Repositories.UserRepository;
