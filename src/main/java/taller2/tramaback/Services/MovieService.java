@@ -76,11 +76,12 @@ import java.util.List;
             movie.setReleaseDate(data.get("release_date") != null ? LocalDate.parse((String) data.get("release_date")) : null);
             movie.setLanguage((String) data.get("original_language"));
             movie.setPosterUrl(data.get("poster_path") != null ? "https://image.tmdb.org/t/p/w500" + data.get("poster_path") : null);
-            movie.setTrailerUrl(null); // Luego puedes expandir esto
-            movie.setDuration(null);
+            movie.setTrailerUrl("https://www.youtube.com/watch?v=" + data.get("video_key"));// Luego puedes expandir esto
+            movie.setDuration(data.get("runtime") != null ? ((Number) data.get("runtime")).doubleValue() : null);
             movie.setCountry(null);
             movie.setDirector(null);
             return movie;
+
         }
     }
 
