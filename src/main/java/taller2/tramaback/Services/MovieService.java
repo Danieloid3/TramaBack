@@ -27,12 +27,61 @@ public class MovieService implements IMovieService {
         this.movieRepository = movieRepository;
         this.restTemplate = restTemplate;
     }
-
     @Override
-    public List<Movie> getAllMovies() {
-        return movieRepository.findAll();
-    }
+ public List<MovieSummaryDTO> getPopularMovies(String period) {
+     // Validar el período
+     if (!"day".equalsIgnoreCase(period) && !"week".equalsIgnoreCase(period)) {
+         throw new IllegalArgumentException("El período debe ser 'day' o 'week'");
+     }
 
+     String url = apiUrl + "/trending/movie/" + period.toLowerCase() + "?api_key=" + apiKey + "&language=es-ES";
+     try {
+         ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
+         Map<String, Object> data = response.getBody();
+         if (data == null || data.get("results") == null) {
+             return List.of();
+         }
+         List<Map<String, Object>> results = (List<Map<String, Object>>) data.get("results");
+         return results.stream().map(movieData -> {
+             MovieSummaryDTO dto = new MovieSummaryDTO();
+             dto.setId(((Number) movieData.get("id")).longValue());
+             dto.setTitle((String) movieData.get("title"));
+             //año
+                if (movieData.get("release_date") != null) {
+                    String releaseDate = (String) movieData.get("release_date");
+                    dto.setReleaseDate(releaseDate);
+                } else {
+                    dto.setReleaseDate(null);
+                }
+
+             dto.setPosterUrl(movieData.get("poster_path") != null
+                     ? "https://image.tmdb.org/t/p/w500" + movieData.get("poster_path")
+                     : null);
+
+             // Obtener director (requiere llamada extra a TMDB)
+             String creditsUrl = apiUrl + "/movie/" + dto.getId() + "/credits?api_key=" + apiKey + "&language=es-ES";
+             try {
+                 ResponseEntity<Map> creditsResponse = restTemplate.getForEntity(creditsUrl, Map.class);
+                 Map<String, Object> creditsData = creditsResponse.getBody();
+                 if (creditsData != null && creditsData.get("crew") != null) {
+                     List<Map<String, Object>> crew = (List<Map<String, Object>>) creditsData.get("crew");
+                     for (Map<String, Object> member : crew) {
+                         if ("Director".equals(member.get("job"))) {
+                             dto.setDirector((String) member.get("name"));
+                             break;
+                         }
+                     }
+                 }
+             } catch (Exception e) {
+                 dto.setDirector(null);
+             }
+
+             return dto;
+         }).toList();
+     } catch (Exception e) {
+         return List.of();
+     }
+ }
     @Override
     public Movie getMovieById(Long id) {
         // 1. Buscar en base de datos
@@ -62,8 +111,46 @@ public class MovieService implements IMovieService {
     }
 
     @Override
-    public List<Movie> getMoviesByTitle(String title) {
-        return List.of();
+    public List<MovieSummaryDTO> getMoviesByTitle(String title) {
+        String url = apiUrl + "/search/movie?api_key=" + apiKey + "&language=es-ES&query=" + title;
+        try {
+            ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
+            Map<String, Object> data = response.getBody();
+            if (data == null || data.get("results") == null) {
+                return List.of();
+            }
+            List<Map<String, Object>> results = (List<Map<String, Object>>) data.get("results");
+            return results.stream().map(movieData -> {
+                MovieSummaryDTO dto = new MovieSummaryDTO();
+                dto.setId(((Number) movieData.get("id")).longValue());
+                dto.setTitle((String) movieData.get("title"));
+                dto.setPosterUrl(movieData.get("poster_path") != null
+                        ? "https://image.tmdb.org/t/p/w500" + movieData.get("poster_path")
+                        : null);
+
+                // Obtener director (requiere llamada extra a TMDB)
+                String creditsUrl = apiUrl + "/movie/" + dto.getId() + "/credits?api_key=" + apiKey + "&language=es-ES";
+                try {
+                    ResponseEntity<Map> creditsResponse = restTemplate.getForEntity(creditsUrl, Map.class);
+                    Map<String, Object> creditsData = creditsResponse.getBody();
+                    if (creditsData != null && creditsData.get("crew") != null) {
+                        List<Map<String, Object>> crew = (List<Map<String, Object>>) creditsData.get("crew");
+                        for (Map<String, Object> member : crew) {
+                            if ("Director".equals(member.get("job"))) {
+                                dto.setDirector((String) member.get("name"));
+                                break;
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    dto.setDirector(null);
+                }
+
+                return dto;
+            }).toList();
+        } catch (Exception e) {
+            return List.of();
+        }
     }
 
     @Override
@@ -130,4 +217,6 @@ public class MovieService implements IMovieService {
 
         return movie;
     }
+
+
 }
