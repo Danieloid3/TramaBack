@@ -1,5 +1,6 @@
 package taller2.tramaback.Models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -42,14 +43,14 @@ public class Movie {
     private Double duration;
 
     @ColumnDefault("now()")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
     @ColumnDefault("now()")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
-
-
 
     public Long getId() {
         return id;
@@ -153,4 +154,8 @@ public class Movie {
         this.updatedAt = ZonedDateTime.now().toOffsetDateTime();
     }
 
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = ZonedDateTime.now().toOffsetDateTime();
+    }
 }
