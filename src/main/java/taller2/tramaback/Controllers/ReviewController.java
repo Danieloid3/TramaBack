@@ -2,10 +2,7 @@ package taller2.tramaback.Controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import taller2.tramaback.Models.Review;
 import taller2.tramaback.Services.IReviewService;
 
@@ -44,14 +41,14 @@ public class ReviewController {
         }
         return review;
     }
-    @GetMapping("/reviews/save")
-    public Review createReview(Review review) {
+    @PostMapping("/reviews/save")
+    public Review createReview(@RequestBody Review review) {
         logger.info("Creating review: {}", review);
         Review createdReview = reviewService.createReview(review);
         logger.info("Review created: {}", createdReview);
         return createdReview;
     }
-    @GetMapping("/reviews/update/{id}")
+    @PostMapping("/reviews/update/{id}")
     public Review updateReview(Long id, Review review) {
         logger.info("Updating review with ID: {}", id);
         Review updatedReview = reviewService.updateReview(id, review);

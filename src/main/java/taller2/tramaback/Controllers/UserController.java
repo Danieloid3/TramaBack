@@ -4,17 +4,14 @@ package taller2.tramaback.Controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import taller2.tramaback.Services.IUserService;
 import taller2.tramaback.Models.User;
 
 import java.util.List;
 
 @RestController
-//http://localhost:5432/trama/
+//http://localhost:5000/trama/
 @RequestMapping("trama")
 @CrossOrigin(value = "http://localhost:3000")
 //puerto de REACT 3000
@@ -48,15 +45,15 @@ public class UserController {
         return user;
     }
 
-    @GetMapping("/users/save")
-    public User createUser(User user) {
+    @PostMapping("/users/save")
+    public User createUser(@RequestBody User user) {
         logger.info("Creating user: {}", user);
         User createdUser = userService.createUser(user);
         logger.info("User created: {}", createdUser);
         return createdUser;
     }
 
-    @GetMapping("/users/update/{id}")
+    @PostMapping("/users/update/{id}")
     public User updateUser(Long id, User user) {
         logger.info("Updating user with ID: {}", id);
         User updatedUser = userService.updateUser(id, user);

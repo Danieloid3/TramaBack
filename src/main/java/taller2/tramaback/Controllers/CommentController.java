@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import taller2.tramaback.Models.Comment;
 import taller2.tramaback.Services.ICommentService;
 import taller2.tramaback.Services.IReviewService;
+import taller2.tramaback.DTOs.CommentDTO;
 
 import java.util.List;
 @RestController
@@ -18,18 +19,24 @@ public class CommentController {
     @Autowired
     private ICommentService commentService;
 
+    // En CommentController.java
     @GetMapping("/comments/review/{reviewId}")
-    public List<Comment> getCommentsByReviewId(@PathVariable Long reviewId) {
+    public List<CommentDTO> getCommentsByReviewId(@PathVariable Long reviewId) {
         logger.info("Obteniendo comentarios para la review {}", reviewId);
-        return commentService.getCommentsByReviewId(reviewId);
+        List<Comment> comments = commentService.getCommentsByReviewId(reviewId);
+        return comments.stream().map(comment -> {
+            CommentDTO dto = new CommentDTO();
+            dto.setId(comment.getId());
+            dto.setUserId(comment.getUser().getId());
+            dto.setReviewId(comment.getReview() != null ? comment.getReview().getId() : null);
+            dto.setRepliedCommentId(comment.getRepliedComment() != null ? comment.getRepliedComment().getId() : null);
+            dto.setContent(comment.getContent());
+            dto.setPublishedDate(comment.getPublishedDate());
+            dto.setCreatedAt(comment.getCreatedAt());
+            dto.setUpdatedAt(comment.getUpdatedAt());
+            return dto;
+        }).toList();
     }
-
-    @GetMapping("/comments/user/{userId}")
-    public List<Comment> getCommentsByUserId(@PathVariable Long userId) {
-        logger.info("Obteniendo comentarios para el usuario {}", userId);
-        return commentService.getCommentsByUserId(userId);
-    }
-
     @GetMapping("/comments/{id}")
     public Comment getCommentById(@PathVariable Long id) {
         logger.info("Obteniendo comentario con id {}", id);

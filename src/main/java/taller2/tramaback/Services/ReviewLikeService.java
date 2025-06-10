@@ -40,7 +40,8 @@ public class ReviewLikeService implements IReviewLikeService {
         }
         ReviewLikeId id = new ReviewLikeId(userId, reviewId);
         if (reviewLikeRepository.existsById(id)) {
-            return null; // Ya existe el like
+            removeLikeFromReview(userId, reviewId); // Ya existe el like
+            return null; // O puedes lanzar una excepción si prefieres
         }
         ReviewLike like = new ReviewLike();
         like.setId(id);

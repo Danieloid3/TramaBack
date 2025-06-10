@@ -1,18 +1,19 @@
 package taller2.tramaback.Models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     @Id
     @ColumnDefault("nextval('users_id_seq')")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -115,4 +116,16 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
+    public User() {
+    }
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = ZonedDateTime.now().toOffsetDateTime();
+        this.updatedAt = ZonedDateTime.now().toOffsetDateTime();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = ZonedDateTime.now().toOffsetDateTime();
+    }
 }
