@@ -1,4 +1,5 @@
 package taller2.tramaback.Repositories;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import taller2.tramaback.Models.Review;
 
@@ -9,5 +10,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     // Custom query to find reviews by user ID
     List<Review> findByUserId(Long userId);
     // Custom query to find reviews by rating
+
+    // ReviewRepository.java
+    List<Review> findByMovieId(Long movieId);
 
 }

@@ -3,9 +3,12 @@ package taller2.tramaback.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import taller2.tramaback.Repositories.ReviewRepository;
+
 import java.util.List;
+
 import taller2.tramaback.Models.Review;
 import taller2.tramaback.Services.IReviewService;
+
 @Service
 public class ReviewService implements IReviewService {
     @Autowired
@@ -15,14 +18,17 @@ public class ReviewService implements IReviewService {
     public List<Review> getAllReviews() {
         return ReviewRepository.findAll();
     }
+
     @Override
     public Review getReviewById(Long id) {
         return ReviewRepository.findById(id).orElse(null);
     }
+
     @Override
     public Review createReview(Review review) {
         return ReviewRepository.save(review);
     }
+
     @Override
     public Review updateReview(Long id, Review review) {
         Review existingReview = ReviewRepository.findById(id).orElse(null);
@@ -34,22 +40,22 @@ public class ReviewService implements IReviewService {
         }
         return null;
     }
+
     @Override
     public void deleteReview(Long id) {
         ReviewRepository.deleteById(id);
     }
+
     @Override
     public List<Review> getReviewsByUserId(Long userId) {
         return ReviewRepository.findByUserId(userId);
     }
-    //@Override
-    //public List<Review> getReviewsByMovieId(Long movieId) {
 
-      //  return ReviewRepository.findByMovieId(movieId);
-    //}
-
-
-
+    // ReviewService.java
+    @Override
+    public List<Review> getReviewsByMovieId(Long movieId) {
+        return ReviewRepository.findByMovieId(movieId);
+    }
 
 
 }
