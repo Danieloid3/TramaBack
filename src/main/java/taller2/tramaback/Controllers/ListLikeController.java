@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("trama/list-likes")
-@CrossOrigin(value = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://trama-gamma.vercel.app"}, allowCredentials = "true")
 public class ListLikeController {
     @Autowired
     private IListLikeService listLikeService;

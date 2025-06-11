@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("trama/")
-@CrossOrigin(value = "http://localhost:3001") // React port
+@CrossOrigin(origins = {"http://localhost:3000", "https://trama-gamma.vercel.app", "http://localhost:3001"}, allowCredentials = "true")
 public class ReviewController {
     private static final Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
