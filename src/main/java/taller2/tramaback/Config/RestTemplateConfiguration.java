@@ -1,4 +1,4 @@
-package taller2.tramaback.Configuration;
+package taller2.tramaback.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
