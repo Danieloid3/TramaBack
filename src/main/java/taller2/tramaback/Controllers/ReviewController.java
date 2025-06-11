@@ -10,7 +10,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("trama/")
-@CrossOrigin(value = "http://localhost:3000") // React port
+
+@CrossOrigin(value = "http://localhost:3001") // React port
 
 public class ReviewController {
     private static final Logger logger = LoggerFactory.getLogger(ReviewController.class);
