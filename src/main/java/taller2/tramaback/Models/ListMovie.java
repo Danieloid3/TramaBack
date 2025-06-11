@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "list_movies")
@@ -59,6 +60,11 @@ public class ListMovie {
 
     public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = ZonedDateTime.now().toOffsetDateTime();
     }
 
 }

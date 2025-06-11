@@ -8,6 +8,7 @@ import taller2.tramaback.Models.User;
 import taller2.tramaback.Repositories.ReviewLikeRepository;
 import taller2.tramaback.Repositories.ReviewRepository;
 import taller2.tramaback.Repositories.UserRepository;
+import taller2.tramaback.DTOs.ReviewLikeDTO;
 
 
 import java.time.OffsetDateTime;
@@ -23,11 +24,21 @@ public class ReviewLikeService implements IReviewLikeService {
     @Autowired
     private UserRepository userRepository;
 
+
+    private ReviewLikeDTO toDTO(ReviewLike like) {
+        return new ReviewLikeDTO(
+                like.getReview().getId(),
+                like.getUser().getId(),
+                like.getLikedAt()
+        );
+    }
+
     @Override
-    public List<ReviewLike> getAllLikesByReviewId(Long reviewId) {
+    public List<ReviewLikeDTO> getAllLikesByReviewId(Long reviewId) {
         return reviewLikeRepository.findAll()
                 .stream()
                 .filter(like -> like.getReview().getId().equals(reviewId))
+                .map(this::toDTO)
                 .toList();
     }
 

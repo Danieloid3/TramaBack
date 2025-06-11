@@ -20,7 +20,7 @@ public class CommentService implements ICommentService {
 
     @Override
     public Comment getCommentById(Long id) {
-        return null;
+        return commentRepository.findById(id).orElse(null);
     }
 
     @Override

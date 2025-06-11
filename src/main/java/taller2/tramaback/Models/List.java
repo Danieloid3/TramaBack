@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "lists")
 public class List {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ColumnDefault("nextval('lists_id_seq')")
     @Column(name = "id", nullable = false)
     private Long id;
@@ -89,6 +91,18 @@ public class List {
 
     public void setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = ZonedDateTime.now().toOffsetDateTime();
+        this.updatedAt = ZonedDateTime.now().toOffsetDateTime();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = ZonedDateTime.now().toOffsetDateTime();
     }
 
 }

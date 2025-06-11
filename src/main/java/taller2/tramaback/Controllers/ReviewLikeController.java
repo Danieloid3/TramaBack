@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import taller2.tramaback.Models.ReviewLike;
 import taller2.tramaback.Services.IReviewLikeService;
 import taller2.tramaback.Services.IReviewService;
+import taller2.tramaback.DTOs.ReviewLikeDTO;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class ReviewLikeController {
     private IReviewLikeService reviewLikeService;
 
     @GetMapping("/review/{reviewId}")
-    public List<ReviewLike> getLikesByReviewId(@PathVariable Long reviewId) {
+    public List<ReviewLikeDTO> getLikesByReviewId(@PathVariable Long reviewId) {
         logger.info("Obteniendo likes para la review {}", reviewId);
         return reviewLikeService.getAllLikesByReviewId(reviewId);
     }
