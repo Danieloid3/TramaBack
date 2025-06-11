@@ -53,7 +53,8 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:3000"); // Or your React app's origin
+        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("https://trama-gamma.vercel.app/");// Or your React app's origin
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
@@ -66,7 +67,7 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration configuration = new CorsConfiguration();
                 configuration.addAllowedOriginPattern("http://localhost:3000");
-                configuration.addAllowedOriginPattern("https://miapp.com");
+                configuration.addAllowedOriginPattern("https://trama-gamma.vercel.app/");
                 configuration.addAllowedMethod("*");
                 configuration.addAllowedHeader("*");
                 configuration.setAllowCredentials(true);
