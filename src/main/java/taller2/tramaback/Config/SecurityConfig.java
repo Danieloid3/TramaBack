@@ -68,6 +68,7 @@ public class SecurityConfig {
                 CorsConfiguration configuration = new CorsConfiguration();
                 configuration.addAllowedOriginPattern("http://localhost:3000");
                 configuration.addAllowedOriginPattern("https://trama-gamma.vercel.app/");
+
                 configuration.addAllowedMethod("*");
                 configuration.addAllowedHeader("*");
                 configuration.setAllowCredentials(true);

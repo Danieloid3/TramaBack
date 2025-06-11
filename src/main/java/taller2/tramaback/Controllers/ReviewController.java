@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import taller2.tramaback.Models.Review;
 import taller2.tramaback.Services.IReviewService;
+import taller2.tramaback.DTOs.ReviewResponseDTO;
 
 import java.util.List;
 
@@ -20,27 +21,16 @@ public class ReviewController {
     private IReviewService reviewService;
 
     @GetMapping("/reviews")
-    public List<Review> getAllReviews() {
-        logger.info("Fetching all reviews");
-        List<Review> reviews = reviewService.getAllReviews();
-        if (reviews.isEmpty()) {
-            logger.warn("No reviews found");
-        } else {
-            reviews.forEach(review -> logger.info(review.toString()));
-        }
-        return reviews;
+    public List<ReviewResponseDTO> getAllReviews() {
+        return reviewService.getAllReviews().stream()
+                .map(this::mapToDTO)
+                .toList();
     }
 
     @GetMapping("/reviews/{id}")
-    public Review getReviewById(@PathVariable Long id) {
-        logger.info("Fetching review with ID: {}", id);
+    public ReviewResponseDTO getReviewById(@PathVariable Long id) {
         Review review = reviewService.getReviewById(id);
-        if (review == null) {
-            logger.warn("Review with ID {} not found", id);
-        } else {
-            logger.info("Found review: {}", review);
-        }
-        return review;
+        return review != null ? mapToDTO(review) : null;
     }
     @PostMapping("/reviews/save")
     public Review createReview(@RequestBody Review review) {
@@ -67,15 +57,27 @@ public class ReviewController {
         logger.info("Review with ID {} deleted", id);
     }
     @GetMapping("/reviews/user/{userId}")
-    public List<Review> getReviewsByUserId(@PathVariable Long userId) {
-        logger.info("Fetching reviews for user with ID: {}", userId);
-        List<Review> reviews = reviewService.getReviewsByUserId(userId);
-        if (reviews.isEmpty()) {
-            logger.warn("No reviews found for user with ID {}", userId);
-        } else {
-            reviews.forEach(review -> logger.info(review.toString()));
+    public List<ReviewResponseDTO> getReviewsByUserId(@PathVariable Long userId) {
+        return reviewService.getReviewsByUserId(userId).stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
+    private ReviewResponseDTO mapToDTO(Review review) {
+        ReviewResponseDTO dto = new ReviewResponseDTO();
+        dto.setUserId(review.getUser().getId());
+        dto.setUserName(review.getUser().getName());
+        if (review.getMovie() != null) {
+            dto.setMovieId(review.getMovie().getId());
+            dto.setMovieTitle(review.getMovie().getTitle());
+            dto.setMovieDirector(review.getMovie().getDirector());
+            dto.setMovieReleaseDate(review.getMovie().getReleaseDate());
         }
-        return reviews;
+        dto.setContent(review.getContent());
+        dto.setRating(review.getRating());
+        dto.setPublishedDate(review.getPublishedDate());
+        dto.setImageUrl(review.getImageUrl());
+        dto.setUpdatedAt(review.getUpdatedAt());
+        return dto;
     }
 
 
