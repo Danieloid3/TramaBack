@@ -31,7 +31,7 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews/{id}")
-    public Review getReviewById(Long id) {
+    public Review getReviewById(@PathVariable Long id) {
         logger.info("Fetching review with ID: {}", id);
         Review review = reviewService.getReviewById(id);
         if (review == null) {
@@ -49,7 +49,7 @@ public class ReviewController {
         return createdReview;
     }
     @PostMapping("/reviews/update/{id}")
-    public Review updateReview(Long id, Review review) {
+    public Review updateReview(@PathVariable Long id, Review review) {
         logger.info("Updating review with ID: {}", id);
         Review updatedReview = reviewService.updateReview(id, review);
         if (updatedReview == null) {
@@ -60,13 +60,13 @@ public class ReviewController {
         return updatedReview;
     }
     @GetMapping("/reviews/delete/{id}")
-    public void deleteReview(Long id) {
+    public void deleteReview(@PathVariable Long id) {
         logger.info("Deleting review with ID: {}", id);
         reviewService.deleteReview(id);
         logger.info("Review with ID {} deleted", id);
     }
     @GetMapping("/reviews/user/{userId}")
-    public List<Review> getReviewsByUserId(Long userId) {
+    public List<Review> getReviewsByUserId(@PathVariable Long userId) {
         logger.info("Fetching reviews for user with ID: {}", userId);
         List<Review> reviews = reviewService.getReviewsByUserId(userId);
         if (reviews.isEmpty()) {

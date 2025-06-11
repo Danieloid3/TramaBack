@@ -102,10 +102,9 @@ public class ListService implements IListService {
     }
     @Override
     public void addFavoriteMovie(Long userId, Long movieId) {
-        // Buscar la lista Favoritas del usuario
+        // Buscar la lista Favoritas del usuario, crear si no existe
         List favoritesList = listRepository.findByUserIdAndIsFavoritesTrue(userId)
                 .orElseGet(() -> {
-                    // Si no existe, crearla
                     List newList = new List();
                     newList.setUser(userRepository.findById(userId).orElseThrow());
                     newList.setName("Favoritas");
@@ -114,9 +113,15 @@ public class ListService implements IListService {
                     return listRepository.save(newList);
                 });
 
-        // Agregar la película a la lista Favoritas
         Movie movie = movieRepository.findById(movieId).orElseThrow();
-        if (!listMovieRepository.existsByListAndMovie(favoritesList, movie)) {
+        if (listMovieRepository.existsByListAndMovie(favoritesList, movie)) {
+            // Si ya está, eliminar (toggle off)
+            ListMovieId id = new ListMovieId();
+            id.setListId(favoritesList.getId());
+            id.setMovieId(movie.getId());
+            listMovieRepository.deleteById(id);
+        } else {
+            // Si no está, agregar (toggle on)
             ListMovie listMovie = new ListMovie();
             ListMovieId id = new ListMovieId();
             id.setListId(favoritesList.getId());
