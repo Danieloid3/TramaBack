@@ -58,7 +58,7 @@ public class SecurityConfig {
         config.setAllowCredentials(true);
         // Estos orígenes deben coincidir con los de la configuración de HttpSecurity
         config.addAllowedOrigin("http://localhost:3000");
-        config.addAllowedOrigin("https://trama-gamma.vercel.app");
+        //config.addAllowedOrigin("https://trama-gamma.vercel.app");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
@@ -72,7 +72,7 @@ public class SecurityConfig {
                 CorsConfiguration configuration = new CorsConfiguration();
                 // Usar addAllowedOriginPattern para mayor flexibilidad si los puertos cambian o hay subdominios.
                 configuration.addAllowedOriginPattern("http://localhost:3000");
-                configuration.addAllowedOriginPattern("https://trama-gamma.vercel.app");
+                //configuration.addAllowedOriginPattern("https://trama-gamma.vercel.app");
                 // Si usas un puerto diferente para React en ReviewController (3001), añádelo también:
                 // configuration.addAllowedOriginPattern("http://localhost:3001");
 
