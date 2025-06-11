@@ -11,5 +11,5 @@ public interface IListService {
     void removeMovieFromList(ListDTO dto);
     OpenListDTO openList(Long listId);
     void addFavoriteMovie(Long userId, Long movieId);
-
+    java.util.List<ListDTO> getListsByUserId(Long userId);
 }

@@ -13,12 +13,9 @@ import taller2.tramaback.Repositories.MovieRepository;
 import taller2.tramaback.Models.ListMovie;
 import taller2.tramaback.Models.ListMovieId;
 import taller2.tramaback.Repositories.ListMovieRepository;
-import taller2.tramaback.DTOs.OpenListDTO;
 import taller2.tramaback.DTOs.MovieSummaryDTO;
-import java.util.stream.Collectors;
-import taller2.tramaback.Models.Movie;
 
-
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 
@@ -83,22 +80,22 @@ public class ListService implements IListService {
                 .filter(lm -> lm.getList().getId().equals(listId))
                 .map(lm -> {
                     Movie m = lm.getMovie();
-                    MovieSummaryDTO dto = new MovieSummaryDTO();
-                    dto.setId(m.getId());
-                    dto.setTitle(m.getTitle());
-                    dto.setPosterUrl(m.getPosterUrl());
+                    MovieSummaryDTO movieDto = new MovieSummaryDTO();
+                    movieDto.setId(m.getId());
+                    movieDto.setTitle(m.getTitle());
+                    movieDto.setPosterUrl(m.getPosterUrl());
                     // Agrega más campos si es necesario
-                    return dto;
+                    return movieDto;
                 })
                 .collect(Collectors.toList());
 
-        OpenListDTO dto = new OpenListDTO();
-        dto.setListId(list.getId());
-        dto.setName(list.getName());
-        dto.setDescription(list.getDescription());
-        dto.setUserId(list.getUser().getId());
-        dto.setMovies(movies);
-        return dto;
+        OpenListDTO openListDto = new OpenListDTO();
+        openListDto.setListId(list.getId());
+        openListDto.setName(list.getName());
+        openListDto.setDescription(list.getDescription());
+        openListDto.setUserId(list.getUser().getId());
+        openListDto.setMovies(movies);
+        return openListDto;
     }
     @Override
     public void addFavoriteMovie(Long userId, Long movieId) {
@@ -106,14 +103,18 @@ public class ListService implements IListService {
         List favoritesList = listRepository.findByUserIdAndIsFavoritesTrue(userId)
                 .orElseGet(() -> {
                     List newList = new List();
-                    newList.setUser(userRepository.findById(userId).orElseThrow());
+                    User user = userRepository.findById(userId)
+                            .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+                    newList.setUser(user);
                     newList.setName("Favoritas");
                     newList.setDescription("Películas favoritas");
                     newList.setIsFavorites(true);
                     return listRepository.save(newList);
                 });
 
-        Movie movie = movieRepository.findById(movieId).orElseThrow();
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + movieId));
+
         if (listMovieRepository.existsByListAndMovie(favoritesList, movie)) {
             // Si ya está, eliminar (toggle off)
             ListMovieId id = new ListMovieId();
@@ -133,4 +134,23 @@ public class ListService implements IListService {
         }
     }
 
+    @Override
+    public java.util.List<ListDTO> getListsByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            // Considera lanzar una excepción UserNotFoundException o devolver una lista vacía
+            // dependiendo de cómo quieras manejar este caso en el controlador.
+            return Collections.emptyList();
+        }
+        return listRepository.findByUser(user).stream()
+                .map(list -> new ListDTO(
+                        list.getId(),
+                        list.getName(),
+                        list.getDescription(),
+                        list.getUser().getId()
+                        // Asegúrate de que ListDTO no espera movieId aquí,
+                        // ya que estas son listas generales, no ítems de lista.
+                ))
+                .collect(Collectors.toList());
+    }
 }

@@ -1,7 +1,11 @@
 package taller2.tramaback.Services;
-import java.util.List;
-import taller2.tramaback.Models.ReviewLike;
+
 import taller2.tramaback.DTOs.ReviewLikeDTO;
+import taller2.tramaback.DTOs.ReviewResponseDTO; // Importar
+import taller2.tramaback.Models.ReviewLike;
+
+import java.util.List;
+
 public interface IReviewLikeService {
     List<ReviewLikeDTO> getAllLikesByReviewId(Long reviewId);
 
@@ -11,4 +15,5 @@ public interface IReviewLikeService {
 
     boolean isUserLikedReview(Long reviewId, Long userId);
 
+    List<ReviewResponseDTO> getLikedReviewsByUserId(Long userId);
 }

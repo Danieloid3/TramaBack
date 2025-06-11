@@ -10,7 +10,7 @@ import taller2.tramaback.Services.IListService;
 
 @RestController
 @RequestMapping("trama/lists")
-@CrossOrigin(value = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://trama-gamma.vercel.app"}, allowCredentials = "true")
 public class ListController {
     @Autowired
     private IListService listService;
@@ -54,5 +54,14 @@ public class ListController {
         }
         listService.addFavoriteMovie(dto.getUserId(), dto.getMovieId());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/user/{userId}") // Nuevo endpoint
+    public ResponseEntity<java.util.List<ListDTO>> getListsByUserId(@PathVariable Long userId) {
+        java.util.List<ListDTO> lists = listService.getListsByUserId(userId);
+        if (lists == null || lists.isEmpty()) {
+            return ResponseEntity.noContent().build(); // 204 No Content si no hay listas o el usuario no existe
+        }
+        return ResponseEntity.ok(lists);
     }
 }
